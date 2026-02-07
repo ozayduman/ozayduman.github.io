@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ozay Duman - Senior Software Engineer specializing in distributed systems, microservices architecture, and cloud technologies">
+    <title>Ozay Duman - Senior Software Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #0a0a0a;
+            --color-surface: #151515;
+            --color-text: #e8e8e8;
+            --color-text-muted: #8a8a8a;
+            --color-accent: #00ff88;
+            --color-border: #2a2a2a;
+            --font-serif: 'Instrument Serif', serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 6rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-md);
+        }
+
+        /* Header */
+        header {
+            padding: var(--spacing-xl) 0;
+            border-bottom: 1px solid var(--color-border);
+            position: relative;
+        }
+
+        .header-content {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: var(--spacing-md);
+            align-items: start;
+        }
+
+        h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: var(--spacing-sm);
+            letter-spacing: -0.02em;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .title {
+            color: var(--color-accent);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: var(--spacing-md);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+
+        .intro {
+            max-width: 700px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-md);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.4s forwards;
+        }
+
+        .social-links {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.6s forwards;
+        }
+
+        .social-links a {
+            color: var(--color-text);
+            text-decoration: none;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border: 1px solid var(--color-border);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .social-links a:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) 0;
+        }
+
+        nav a {
+            color: var(--color-text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        nav a:hover {
+            color: var(--color-accent);
+        }
+
+        /* Section Styles */
+        section {
+            padding: var(--spacing-xl) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .section-number {
+            color: var(--color-accent);
+            font-size: 0.85rem;
+        }
+
+        h2 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        /* Focus Areas */
+        .focus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .focus-item {
+            padding: var(--spacing-md);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            transition: all 0.3s ease;
+        }
+
+        .focus-item:hover {
+            border-color: var(--color-accent);
+            transform: translateX(4px);
+        }
+
+        .focus-item h3 {
+            color: var(--color-accent);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Experience */
+        .experience-item {
+            margin-bottom: var(--spacing-lg);
+            padding-left: var(--spacing-md);
+            border-left: 2px solid var(--color-border);
+            transition: border-color 0.3s ease;
+        }
+
+        .experience-item:hover {
+            border-left-color: var(--color-accent);
+        }
+
+        .experience-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .experience-title {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--color-text);
+        }
+
+        .experience-company {
+            color: var(--color-accent);
+            font-size: 1rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .experience-period {
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+        }
+
+        .experience-description {
+            color: var(--color-text-muted);
+            margin-top: var(--spacing-sm);
+            line-height: 1.8;
+        }
+
+        .experience-highlights {
+            margin-top: var(--spacing-sm);
+            padding-left: var(--spacing-sm);
+        }
+
+        .experience-highlights li {
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-text-muted);
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .skill-category h3 {
+            color: var(--color-accent);
+            font-size: 1rem;
+            margin-bottom: var(--spacing-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+        }
+
+        .skill-tag {
+            padding: 0.4rem 0.8rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        /* Education */
+        .education-item {
+            padding: var(--spacing-md);
+            background: var(--color-surface);
+            border-left: 3px solid var(--color-accent);
+        }
+
+        .education-degree {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .education-school {
+            color: var(--color-accent);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .education-details {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Interests */
+        .interests-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .interest-item {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            transition: all 0.3s ease;
+        }
+
+        .interest-item:hover {
+            border-color: var(--color-accent);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        /* Footer */
+        footer {
+            padding: var(--spacing-lg) 0;
+            text-align: center;
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--spacing-sm);
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .header-content {
+                grid-template-columns: 1fr;
+            }
+
+            .experience-header {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: var(--spacing-xs);
+            }
+
+            section {
+                padding: var(--spacing-md) 0;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--color-accent);
+            color: var(--color-bg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div>
+                    <h1>Özay Duman</h1>
+                    <div class="title">Senior Software Engineer & Tech Lead</div>
+                    <p class="intro">
+                        Dedicated to developing highly available, cost-efficient, fault-tolerant large-scale distributed systems 
+                        and automated software infrastructures. Leading infrastructure teams with over 10 years of expertise in 
+                        Java technologies, microservices architecture, and cloud technologies.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://github.com/ozayduman/" target="_blank" rel="noopener">
+                            <span>→</span> GitHub
+                        </a>
+                        <a href="https://hub.docker.com/r/ozay/" target="_blank" rel="noopener">
+                            <span>→</span> Docker Hub
+                        </a>
+                        <a href="https://play.google.com/store/apps/dev?id=5333644778844177206" target="_blank" rel="noopener">
+                            <span>→</span> Projects
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=4NciD9gV180&feature=youtu.be&t=8960" target="_blank" rel="noopener">
+                            <span>→</span> Talks
+                        </a>
+                        <a href="https://www.linkedin.com/in/ozayduman/" target="_blank" rel="noopener">
+                            <span>→</span> LinkedIn
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#focus">Focus Areas</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#interests">Interests</a></li>
+            </ul>
+        </nav>
+
+        <section id="focus">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <h2>Focus Areas</h2>
+            </div>
+            <div class="focus-grid">
+                <div class="focus-item">
+                    <h3>System Architecture</h3>
+                    <p>Developing high quality, testable and maintainable software systems with focus on scalability and resilience</p>
+                </div>
+                <div class="focus-item">
+                    <h3>Infrastructure Design</h3>
+                    <p>Designing and delivering HA, resilient and automated software infrastructures for mission-critical applications</p>
+                </div>
+                <div class="focus-item">
+                    <h3>DevOps & CI/CD</h3>
+                    <p>Designing and building Continuous Delivery workflows and environments with containerization</p>
+                </div>
+                <div class="focus-item">
+                    <h3>Microservices</h3>
+                    <p>Coaching teams towards Microservice architecture and implementing distributed system patterns</p>
+                </div>
+                <div class="focus-item">
+                    <h3>Monitoring & Performance</h3>
+                    <p>Designing and building real-time infrastructure monitoring for resources, performance, and QoS</p>
+                </div>
+                <div class="focus-item">
+                    <h3>Consulting</h3>
+                    <p>Providing expertise on load balancing, clustering, scaling, caching and performance optimization</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <h2>Experience</h2>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div>
+                        <div class="experience-company">TÜBİTAK BİLGEM</div>
+                        <div class="experience-title">Software Architect & Team Lead</div>
+                    </div>
+                    <div class="experience-period">May 2016 - Present</div>
+                </div>
+                <div class="experience-description">
+                    <p><strong>Project:</strong> Development of Integrated Financial Management System of Turkey using open source technologies and microservices architecture</p>
+                    <p style="margin-top: 1rem;"><strong>Core Technologies:</strong> Java, PostgreSQL, Hibernate, Spring Boot, Spring Cloud, Apache Kafka, Apache Mesos, Kubernetes, Redis, Docker, Elastic Stack, Nginx, Ember.js</p>
+                </div>
+                <ul class="experience-highlights">
+                    <li>Leading infrastructure team responsible for architectural decisions and managing 22 microservices</li>
+                    <li>Implemented event sourcing solution for distributed transactions using Kafka and Apache Curator</li>
+                    <li>Integrated Jasig CAS Single Sign-on with Redis-Sentinel replication (contributed to official release)</li>
+                    <li>Implemented Service Registry and Discovery pattern with client-side load balancing using Netflix Eureka and Ribbon</li>
+                    <li>Developed Nginx API Gateway library for dynamic upstream server management</li>
+                    <li>Integrated Redis Sentinel for distributed session replication and caching</li>
+                    <li>Developed localizable PDF and Word reporting libraries using iText and Apache POI</li>
+                    <li>Managing DevOps activities including CI/CD, containerization, centralized logging, and monitoring</li>
+                </ul>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div>
+                        <div class="experience-company">TÜBİTAK BİLGEM</div>
+                        <div class="experience-title">Senior Researcher - Senior Full Stack Developer</div>
+                    </div>
+                    <div class="experience-period">Nov 2013 - May 2016</div>
+                </div>
+                <div class="experience-description">
+                    <p><strong>Project:</strong> Social Aid Project - Providing social aids to needy citizens fairly</p>
+                    <p style="margin-top: 1rem;"><strong>Core Technologies:</strong> Java EE, Hibernate, iText, EJB 3.0, Oracle WebLogic, Oracle Database, Adobe Flex</p>
+                </div>
+                <ul class="experience-highlights">
+                    <li>Handled complete software lifecycle from requirements gathering to deployment</li>
+                    <li>Developed Authentication, Authorization, Context Sensitive Help, and Reporting modules</li>
+                    <li>Participated in Technical Work Groups for process improvements</li>
+                    <li>System handled 6,000 average active sessions concurrently</li>
+                </ul>
+            </div>
+
+            <div class="experience-item">
+                <div class="experience-header">
+                    <div>
+                        <div class="experience-company">TÜBİTAK BİLGEM</div>
+                        <div class="experience-title">Researcher - Full Stack Developer</div>
+                    </div>
+                    <div class="experience-period">Jan 2009 - Nov 2013</div>
+                </div>
+                <div class="experience-description">
+                    <p><strong>Project:</strong> Social Aid Project</p>
+                    <p style="margin-top: 1rem;"><strong>Core Technologies:</strong> Java EE, Hibernate, EJB 3.0, Oracle WebLogic, Adobe Flex, JUnit, Jenkins</p>
+                </div>
+                <ul class="experience-highlights">
+                    <li>Involved in all phases of software lifecycle including analysis, design, development, and testing</li>
+                    <li>Implemented automated testing strategies and integration testing</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2>Technical Skills</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Languages & Frameworks</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">Spring Boot</span>
+                        <span class="skill-tag">Spring Cloud</span>
+                        <span class="skill-tag">Hibernate</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Ember.js</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Cloud & Infrastructure</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Kubernetes</span>
+                        <span class="skill-tag">Apache Mesos</span>
+                        <span class="skill-tag">Marathon</span>
+                        <span class="skill-tag">Nginx</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Data & Messaging</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">PostgreSQL</span>
+                        <span class="skill-tag">Oracle DB</span>
+                        <span class="skill-tag">Redis</span>
+                        <span class="skill-tag">Apache Kafka</span>
+                        <span class="skill-tag">ZooKeeper</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>DevOps & Monitoring</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">CI/CD</span>
+                        <span class="skill-tag">Jenkins</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">Elasticsearch</span>
+                        <span class="skill-tag">Logstash</span>
+                        <span class="skill-tag">Kibana</span>
+                        <span class="skill-tag">Pinpoint</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Architecture Patterns</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Microservices</span>
+                        <span class="skill-tag">Event Sourcing</span>
+                        <span class="skill-tag">Service Discovery</span>
+                        <span class="skill-tag">Load Balancing</span>
+                        <span class="skill-tag">Distributed Systems</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Security & Auth</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">CAS SSO</span>
+                        <span class="skill-tag">OAuth</span>
+                        <span class="skill-tag">JWT</span>
+                        <span class="skill-tag">Redis Sentinel</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <h2>Education</h2>
+            </div>
+            <div class="education-item">
+                <div class="education-degree">B.S. in Computer Engineering</div>
+                <div class="education-school">Ege University</div>
+                <div class="education-details">
+                    2004 - 2008 • GPA: 3.7/4.0 • Second Degree in CE Department
+                </div>
+            </div>
+        </section>
+
+        <section id="interests">
+            <div class="section-header">
+                <span class="section-number">05</span>
+                <h2>Areas of Interest</h2>
+            </div>
+            <div class="interests-list">
+                <div class="interest-item">Microservices Architecture</div>
+                <div class="interest-item">Large Scale System Design</div>
+                <div class="interest-item">Cloud Technologies</div>
+                <div class="interest-item">Containerization</div>
+                <div class="interest-item">Serverless Architecture</div>
+                <div class="interest-item">Algorithms</div>
+                <div class="interest-item">Continuous Deployment</div>
+                <div class="interest-item">AWS Solutions</div>
+                <div class="interest-item">Open Source Contribution</div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2026 Ozay Duman. Built with passion for clean code and elegant architecture.</p>
+        </footer>
+    </div>
+</body>
+</html>
