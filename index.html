@@ -10,15 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --color-bg: #0a0a0a;
-            --color-surface: #151515;
-            --color-text: #e8e8e8;
-            --color-text-muted: #8a8a8a;
-            --color-accent: #00ff88;
-            --color-accent-2: #00d4ff;
-            --color-border: #2a2a2a;
-            --glass: rgba(232, 232, 232, 0.035);
-            --glass-border: rgba(232, 232, 232, 0.09);
+            --color-bg: #0b0f0a;
+            --color-surface: #121710;
+            --color-text: #e9e6dd;
+            --color-text-muted: #93a186;
+            --color-accent: #8fd14f;
+            --color-accent-2: #ffb347;
+            --color-border: #26301f;
+            --glass: rgba(233, 230, 221, 0.035);
+            --glass-border: rgba(233, 230, 221, 0.08);
             --font-serif: 'Instrument Serif', serif;
             --font-mono: 'IBM Plex Mono', monospace;
             --spacing-xs: 0.5rem;
@@ -35,6 +35,54 @@
         }
 
         html { background: var(--color-bg); }
+
+        .canopy-glow {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 90% 60% at 50% 100%, rgba(143, 209, 79, 0.16), transparent 60%),
+                radial-gradient(ellipse 60% 40% at 30% 0%, rgba(255, 179, 71, 0.10), transparent 55%),
+                radial-gradient(ellipse 50% 40% at 80% 15%, rgba(143, 209, 79, 0.08), transparent 60%),
+                var(--color-bg);
+        }
+
+        .light-shaft {
+            position: fixed;
+            inset: -20% -20%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
+            mix-blend-mode: screen;
+            background: repeating-conic-gradient(
+                from 205deg at 35% -10%,
+                rgba(255, 214, 140, 0.10) 0deg,
+                transparent 4deg,
+                transparent 16deg,
+                rgba(255, 214, 140, 0.07) 20deg,
+                transparent 26deg,
+                transparent 40deg
+            );
+            animation: shaft-drift 40s linear infinite;
+        }
+        @keyframes shaft-drift {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .treeline {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            z-index: 1;
+            pointer-events: none;
+            transition: transform 0.6s ease-out;
+        }
+        .treeline svg { display: block; width: 100%; height: auto; }
+        .treeline-back { opacity: 0.55; bottom: 6vh; }
+        .treeline-front { opacity: 0.9; }
 
         body {
             background: var(--color-bg);
@@ -61,9 +109,9 @@
         .vignette {
             position: fixed;
             inset: 0;
-            z-index: 1;
+            z-index: 2;
             pointer-events: none;
-            background: radial-gradient(ellipse at 50% 20%, transparent 0%, transparent 40%, rgba(10,10,10,0.5) 85%, var(--color-bg) 100%);
+            background: radial-gradient(ellipse at 50% 20%, transparent 0%, transparent 35%, rgba(11,15,10,0.55) 85%, var(--color-bg) 100%);
         }
 
         #cursor-dot, #cursor-ring {
@@ -81,12 +129,12 @@
         }
         #cursor-ring {
             width: 30px; height: 30px;
-            border: 1px solid rgba(0, 255, 136, 0.4);
+            border: 1px solid rgba(143, 209, 79, 0.4);
             transition: width .25s ease, height .25s ease, border-color .25s ease;
         }
         body.hover-active #cursor-ring {
             width: 50px; height: 50px;
-            border-color: rgba(0, 212, 255, 0.7);
+            border-color: rgba(255, 179, 71, 0.7);
         }
 
         .container {
@@ -94,7 +142,7 @@
             margin: 0 auto;
             padding: var(--spacing-md);
             position: relative;
-            z-index: 2;
+            z-index: 3;
         }
 
         /* Header */
@@ -170,7 +218,7 @@
         nav {
             position: sticky;
             top: 0;
-            background: rgba(10, 10, 10, 0.75);
+            background: rgba(11, 15, 10, 0.75);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             z-index: 100;
@@ -266,7 +314,7 @@
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-radius: 4px;
+            border-radius: 12px 4px 12px 4px;
             position: relative;
             overflow: hidden;
             transition: transform 0.5s cubic-bezier(.2,.8,.2,1), border-color 0.4s ease, box-shadow 0.5s ease;
@@ -276,7 +324,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(0, 255, 136, 0.1), transparent 60%);
+            background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgba(143, 209, 79, 0.1), transparent 60%);
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
@@ -285,8 +333,8 @@
         .focus-item:hover::before { opacity: 1; }
 
         .focus-item:hover {
-            border-color: rgba(0, 255, 136, 0.4);
-            box-shadow: 0 20px 50px -25px rgba(0, 255, 136, 0.25);
+            border-color: rgba(143, 209, 79, 0.4);
+            box-shadow: 0 20px 50px -25px rgba(143, 209, 79, 0.25);
         }
 
         .focus-item h3 {
@@ -303,7 +351,7 @@
             padding: var(--spacing-md);
             padding-left: var(--spacing-md);
             border-left: 2px solid var(--color-border);
-            border-radius: 2px;
+            border-radius: 3px 10px 10px 3px;
             transition: border-color 0.4s ease, background 0.4s ease, transform 0.4s ease;
         }
 
@@ -381,7 +429,7 @@
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: 3px;
+            border-radius: 14px;
             font-size: 0.85rem;
             transition: all 0.3s ease;
         }
@@ -389,7 +437,7 @@
         .skill-tag:hover {
             border-color: var(--color-accent-2);
             color: var(--color-accent-2);
-            box-shadow: 0 0 16px -4px rgba(0, 212, 255, 0.5);
+            box-shadow: 0 0 16px -4px rgba(255, 179, 71, 0.5);
             transform: translateY(-2px);
         }
 
@@ -400,8 +448,8 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-left: 3px solid var(--color-accent);
-            border-radius: 2px;
-            box-shadow: 0 20px 50px -30px rgba(0, 255, 136, 0.2);
+            border-radius: 3px 10px 10px 3px;
+            box-shadow: 0 20px 50px -30px rgba(143, 209, 79, 0.2);
         }
 
         .education-degree {
@@ -434,13 +482,13 @@
             border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: 3px;
+            border-radius: 20px;
             transition: all 0.3s ease;
         }
 
         .interest-item:hover {
             border-color: var(--color-accent);
-            background: rgba(0, 255, 136, 0.06);
+            background: rgba(143, 209, 79, 0.06);
             transform: translateY(-2px);
         }
 
@@ -536,7 +584,11 @@
     </style>
 </head>
 <body>
+    <div class="canopy-glow"></div>
+    <div class="light-shaft"></div>
     <canvas id="network-canvas"></canvas>
+    <div class="treeline treeline-back" id="treeline-back"></div>
+    <div class="treeline treeline-front" id="treeline-front"></div>
     <div class="vignette"></div>
     <div id="cursor-ring"></div>
     <div id="cursor-dot"></div>
@@ -581,7 +633,7 @@
                     <li><a href="#education">Education</a></li>
                     <li><a href="#interests">Interests</a></li>
                 </ul>
-                <div class="nav-hud">MICROSERVICES MANAGED <span id="hud-count">22</span></div>
+                <div class="nav-hud">ROOT SYSTEMS GROWN <span id="hud-count">22</span></div>
             </div>
         </nav>
 
@@ -856,13 +908,17 @@ document.querySelectorAll('.focus-item').forEach(card => {
     card.addEventListener('mouseleave', () => { card.style.transform = ''; });
 });
 
-/* ---------- Distributed-systems network background ---------- */
+/* ---------- Forest background: root network + drifting leaves + fireflies ---------- */
 (function () {
     const canvas = document.getElementById('network-canvas');
     const ctx = canvas.getContext('2d');
-    let w, h, nodes;
-    const nodeCount = window.innerWidth < 700 ? 55 : 110;
-    const linkDist = 140;
+    let w, h, roots, leaves, motes, fireflies;
+    const isSmall = window.innerWidth < 700;
+    const rootCount = isSmall ? 55 : 110;
+    const leafCount = isSmall ? 22 : 40;
+    const moteCount = isSmall ? 26 : 50;
+    const fireflyCount = isSmall ? 10 : 20;
+    const linkDist = 130;
     const mouse = { x: -1000, y: -1000 };
 
     function resize() {
@@ -874,69 +930,226 @@ document.querySelectorAll('.focus-item').forEach(card => {
     window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
     window.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
 
-    function makeNodes() {
-        nodes = [];
-        for (let i = 0; i < nodeCount; i++) {
-            nodes.push({
+    const leafPalette = [
+        'rgba(143, 209, 79, 0.55)',
+        'rgba(94, 168, 60, 0.5)',
+        'rgba(255, 179, 71, 0.5)',
+        'rgba(232, 197, 71, 0.45)',
+        'rgba(217, 100, 58, 0.4)'
+    ];
+
+    function makeRoots() {
+        roots = [];
+        for (let i = 0; i < rootCount; i++) {
+            roots.push({
                 x: Math.random() * w,
                 y: Math.random() * h,
-                vx: (Math.random() - 0.5) * 0.25,
-                vy: (Math.random() - 0.5) * 0.25,
-                r: Math.random() * 1.6 + 0.6,
-                accent: Math.random() > 0.86
+                vx: (Math.random() - 0.5) * 0.18,
+                vy: (Math.random() - 0.5) * 0.18,
+                r: Math.random() * 1.5 + 0.5,
+                accent: Math.random() > 0.88
             });
         }
     }
-    makeNodes();
+    makeRoots();
+
+    function makeLeaves() {
+        leaves = [];
+        for (let i = 0; i < leafCount; i++) {
+            leaves.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                size: Math.random() * 7 + 5,
+                speed: Math.random() * 0.35 + 0.15,
+                sway: Math.random() * 1.2 + 0.4,
+                swayOffset: Math.random() * Math.PI * 2,
+                rotation: Math.random() * Math.PI * 2,
+                rotSpeed: (Math.random() - 0.5) * 0.015,
+                color: leafPalette[Math.floor(Math.random() * leafPalette.length)]
+            });
+        }
+    }
+    makeLeaves();
+
+    function makeMotes() {
+        motes = [];
+        for (let i = 0; i < moteCount; i++) {
+            motes.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                r: Math.random() * 1.2 + 0.3,
+                speed: Math.random() * 0.12 + 0.03,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+    }
+    makeMotes();
+
+    function makeFireflies() {
+        fireflies = [];
+        for (let i = 0; i < fireflyCount; i++) {
+            fireflies.push({
+                x: Math.random() * w,
+                y: h * 0.4 + Math.random() * h * 0.6,
+                baseY: 0,
+                r: Math.random() * 1.4 + 1.2,
+                phase: Math.random() * Math.PI * 2,
+                speed: Math.random() * 0.4 + 0.15,
+                angle: Math.random() * Math.PI * 2,
+                turn: (Math.random() - 0.5) * 0.06
+            });
+        }
+    }
+    makeFireflies();
+
+    let t = 0;
 
     function step() {
+        t += 0.016;
         ctx.clearRect(0, 0, w, h);
 
-        for (const n of nodes) {
+        /* drifting root / mycelium network, gently pulled by unseen currents */
+        for (const n of roots) {
             n.x += n.vx; n.y += n.vy;
             if (n.x < 0 || n.x > w) n.vx *= -1;
             if (n.y < 0 || n.y > h) n.vy *= -1;
         }
 
-        for (let i = 0; i < nodes.length; i++) {
-            for (let j = i + 1; j < nodes.length; j++) {
-                const a = nodes[i], b = nodes[j];
+        for (let i = 0; i < roots.length; i++) {
+            for (let j = i + 1; j < roots.length; j++) {
+                const a = roots[i], b = roots[j];
                 const dx = a.x - b.x, dy = a.y - b.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
                 if (dist < linkDist) {
-                    const opacity = (1 - dist / linkDist) * 0.16;
-                    ctx.strokeStyle = `rgba(0, 255, 136, ${opacity})`;
+                    const opacity = (1 - dist / linkDist) * 0.14;
+                    const mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.06;
+                    const my = (a.y + b.y) / 2 + (a.x - b.x) * 0.06;
+                    ctx.strokeStyle = `rgba(143, 209, 79, ${opacity})`;
                     ctx.lineWidth = 0.6;
                     ctx.beginPath();
                     ctx.moveTo(a.x, a.y);
-                    ctx.lineTo(b.x, b.y);
+                    ctx.quadraticCurveTo(mx, my, b.x, b.y);
                     ctx.stroke();
                 }
             }
-            // link to cursor to form a live "active node"
-            const dxm = nodes[i].x - mouse.x, dym = nodes[i].y - mouse.y;
+            /* roots reaching toward the light (cursor) */
+            const dxm = roots[i].x - mouse.x, dym = roots[i].y - mouse.y;
             const dm = Math.sqrt(dxm * dxm + dym * dym);
             if (dm < linkDist * 1.3) {
-                const opacity = (1 - dm / (linkDist * 1.3)) * 0.35;
-                ctx.strokeStyle = `rgba(0, 212, 255, ${opacity})`;
+                const opacity = (1 - dm / (linkDist * 1.3)) * 0.3;
+                ctx.strokeStyle = `rgba(255, 179, 71, ${opacity})`;
                 ctx.lineWidth = 0.7;
                 ctx.beginPath();
-                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.moveTo(roots[i].x, roots[i].y);
                 ctx.lineTo(mouse.x, mouse.y);
                 ctx.stroke();
             }
         }
 
-        for (const n of nodes) {
+        for (const n of roots) {
             ctx.beginPath();
             ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-            ctx.fillStyle = n.accent ? 'rgba(0, 212, 255, 0.75)' : 'rgba(0, 255, 136, 0.55)';
+            ctx.fillStyle = n.accent ? 'rgba(255, 179, 71, 0.7)' : 'rgba(143, 209, 79, 0.5)';
+            ctx.fill();
+        }
+
+        /* soft light motes, like dust suspended in forest light */
+        for (const m of motes) {
+            m.y -= m.speed;
+            if (m.y < -5) { m.y = h + 5; m.x = Math.random() * w; }
+            const flicker = 0.25 + Math.sin(t * 0.6 + m.phase) * 0.15;
+            ctx.beginPath();
+            ctx.arc(m.x + Math.sin(t * 0.3 + m.phase) * 8, m.y, m.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 179, 71, ${flicker})`;
+            ctx.fill();
+        }
+
+        /* falling leaves, swaying as they drift down */
+        for (const lf of leaves) {
+            lf.y += lf.speed;
+            lf.x += Math.sin(t * lf.sway + lf.swayOffset) * 0.6;
+            lf.rotation += lf.rotSpeed;
+            if (lf.y > h + 20) { lf.y = -20; lf.x = Math.random() * w; }
+
+            ctx.save();
+            ctx.translate(lf.x, lf.y);
+            ctx.rotate(lf.rotation);
+            ctx.beginPath();
+            ctx.moveTo(0, -lf.size);
+            ctx.quadraticCurveTo(lf.size * 0.7, 0, 0, lf.size);
+            ctx.quadraticCurveTo(-lf.size * 0.7, 0, 0, -lf.size);
+            ctx.fillStyle = lf.color;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        /* fireflies: warm pulsing glow drifting in gentle loops */
+        for (const fl of fireflies) {
+            fl.angle += fl.turn;
+            fl.x += Math.cos(fl.angle) * fl.speed;
+            fl.y += Math.sin(fl.angle) * fl.speed * 0.6;
+            if (fl.x < 0) fl.x = w; if (fl.x > w) fl.x = 0;
+            if (fl.y < h * 0.3) fl.y = h * 0.3; if (fl.y > h) fl.y = h;
+
+            const glow = 0.4 + Math.sin(t * 1.4 + fl.phase) * 0.35;
+            const grad = ctx.createRadialGradient(fl.x, fl.y, 0, fl.x, fl.y, fl.r * 6);
+            grad.addColorStop(0, `rgba(232, 255, 150, ${Math.max(glow, 0)})`);
+            grad.addColorStop(1, 'rgba(232, 255, 150, 0)');
+            ctx.beginPath();
+            ctx.arc(fl.x, fl.y, fl.r * 6, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(fl.x, fl.y, fl.r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 220, ${Math.min(glow + 0.3, 1)})`;
             ctx.fill();
         }
 
         requestAnimationFrame(step);
     }
     step();
+})();
+
+/* ---------- Procedural pine treeline silhouettes ---------- */
+(function () {
+    function buildTreeline(el, opts) {
+        function render() {
+            const w = window.innerWidth;
+            const h = opts.height;
+            const peaks = Math.ceil(w / opts.spacing) + 2;
+            let d = `M0,${h} `;
+            let x = -opts.spacing;
+            for (let i = 0; i <= peaks; i++) {
+                const peakH = opts.minH + Math.random() * (opts.maxH - opts.minH);
+                const px = x + opts.spacing * 0.5;
+                d += `L${x + opts.spacing * 0.15},${h} L${px},${h - peakH} L${x + opts.spacing},${h} `;
+                x += opts.spacing;
+            }
+            d += `L${w},${h} L${w},${h} Z`;
+            el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="${d}" fill="${opts.color}"></path>
+            </svg>`;
+        }
+        render();
+        window.addEventListener('resize', render);
+    }
+
+    buildTreeline(document.getElementById('treeline-back'), {
+        height: 190, spacing: 90, minH: 70, maxH: 170, color: 'rgba(15, 26, 12, 0.75)'
+    });
+    buildTreeline(document.getElementById('treeline-front'), {
+        height: 260, spacing: 130, minH: 110, maxH: 240, color: 'rgba(6, 12, 6, 0.92)'
+    });
+
+    /* gentle parallax sway with cursor position */
+    const back = document.getElementById('treeline-back');
+    const front = document.getElementById('treeline-front');
+    window.addEventListener('mousemove', e => {
+        const nx = (e.clientX / window.innerWidth - 0.5);
+        back.style.transform = `translateX(${nx * -14}px)`;
+        front.style.transform = `translateX(${nx * -26}px)`;
+    });
 })();
 </script>
 </body>
