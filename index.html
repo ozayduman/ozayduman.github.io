@@ -81,8 +81,20 @@
             transition: transform 0.6s ease-out;
         }
         .treeline svg { display: block; width: 100%; height: auto; }
-        .treeline-back { opacity: 0.55; bottom: 6vh; }
-        .treeline-front { opacity: 0.9; }
+        .treeline-far { opacity: 0.4; }
+        .treeline-back { opacity: 0.65; }
+        .treeline-front { opacity: 0.95; }
+
+        .canopy-top {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.9;
+            transition: transform 0.6s ease-out;
+        }
+        .canopy-top svg { display: block; width: 100%; height: auto; }
 
         body {
             background: var(--color-bg);
@@ -587,8 +599,10 @@
     <div class="canopy-glow"></div>
     <div class="light-shaft"></div>
     <canvas id="network-canvas"></canvas>
+    <div class="treeline treeline-far" id="treeline-far"></div>
     <div class="treeline treeline-back" id="treeline-back"></div>
     <div class="treeline treeline-front" id="treeline-front"></div>
+    <div class="canopy-top" id="canopy-top"></div>
     <div class="vignette"></div>
     <div id="cursor-ring"></div>
     <div id="cursor-dot"></div>
@@ -1111,44 +1125,104 @@ document.querySelectorAll('.focus-item').forEach(card => {
     step();
 })();
 
-/* ---------- Procedural pine treeline silhouettes ---------- */
+/* ---------- Procedural forest: tree clusters + hanging canopy ---------- */
 (function () {
-    function buildTreeline(el, opts) {
+    function rand(min, max) { return min + Math.random() * (max - min); }
+
+    /* an organic leafy blob made of overlapping circles */
+    function canopyBlob(cx, cy, r, color) {
+        let s = '';
+        const lobes = Math.floor(rand(5, 8));
+        for (let i = 0; i < lobes; i++) {
+            const a = (i / lobes) * Math.PI * 2 + rand(-0.2, 0.2);
+            const dist = r * rand(0.35, 0.6);
+            const lr = r * rand(0.55, 0.85);
+            const lx = cx + Math.cos(a) * dist;
+            const ly = cy + Math.sin(a) * dist * 0.7;
+            s += `<circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="${lr.toFixed(1)}" fill="${color}" />`;
+        }
+        s += `<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${(r * 0.85).toFixed(1)}" fill="${color}" />`;
+        return s;
+    }
+
+    function buildForestLayer(el, opts) {
         function render() {
             const w = window.innerWidth;
             const h = opts.height;
-            const peaks = Math.ceil(w / opts.spacing) + 2;
-            let d = `M0,${h} `;
-            let x = -opts.spacing;
-            for (let i = 0; i <= peaks; i++) {
-                const peakH = opts.minH + Math.random() * (opts.maxH - opts.minH);
-                const px = x + opts.spacing * 0.5;
-                d += `L${x + opts.spacing * 0.15},${h} L${px},${h - peakH} L${x + opts.spacing},${h} `;
-                x += opts.spacing;
+            let shapes = '';
+            let x = -opts.spacing * 0.5;
+            while (x < w + opts.spacing) {
+                const trunkH = rand(opts.minTrunk, opts.maxTrunk);
+                const trunkW = rand(opts.trunkW * 0.7, opts.trunkW * 1.3);
+                const canopyR = rand(opts.minCanopy, opts.maxCanopy);
+                const tx = x + rand(-opts.jitter, opts.jitter);
+                const baseY = h;
+                const trunkTopY = baseY - trunkH;
+                shapes += `<rect x="${(tx - trunkW / 2).toFixed(1)}" y="${trunkTopY.toFixed(1)}" width="${trunkW.toFixed(1)}" height="${(trunkH + 4).toFixed(1)}" fill="${opts.trunkColor}" />`;
+                shapes += canopyBlob(tx, trunkTopY - canopyR * 0.35, canopyR, opts.canopyColor);
+                x += opts.spacing * rand(0.7, 1.15);
             }
-            d += `L${w},${h} L${w},${h} Z`;
-            el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="${d}" fill="${opts.color}"></path>
-            </svg>`;
+            el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">${shapes}</svg>`;
         }
         render();
         window.addEventListener('resize', render);
     }
 
-    buildTreeline(document.getElementById('treeline-back'), {
-        height: 190, spacing: 90, minH: 70, maxH: 170, color: 'rgba(15, 26, 12, 0.75)'
+    buildForestLayer(document.getElementById('treeline-far'), {
+        height: 320, spacing: 150, jitter: 30,
+        minTrunk: 60, maxTrunk: 110, trunkW: 6,
+        minCanopy: 55, maxCanopy: 95,
+        trunkColor: 'rgba(20, 32, 16, 0.5)',
+        canopyColor: 'rgba(24, 40, 18, 0.5)'
     });
-    buildTreeline(document.getElementById('treeline-front'), {
-        height: 260, spacing: 130, minH: 110, maxH: 240, color: 'rgba(6, 12, 6, 0.92)'
+    buildForestLayer(document.getElementById('treeline-back'), {
+        height: 430, spacing: 190, jitter: 40,
+        minTrunk: 90, maxTrunk: 160, trunkW: 10,
+        minCanopy: 80, maxCanopy: 135,
+        trunkColor: 'rgba(14, 22, 11, 0.72)',
+        canopyColor: 'rgba(16, 30, 12, 0.72)'
+    });
+    buildForestLayer(document.getElementById('treeline-front'), {
+        height: 560, spacing: 230, jitter: 55,
+        minTrunk: 130, maxTrunk: 230, trunkW: 16,
+        minCanopy: 110, maxCanopy: 190,
+        trunkColor: 'rgba(6, 11, 5, 0.92)',
+        canopyColor: 'rgba(8, 16, 6, 0.92)'
     });
 
+    /* hanging canopy from above, as if standing beneath the tree cover */
+    function buildTopCanopy() {
+        const el = document.getElementById('canopy-top');
+        function render() {
+            const w = window.innerWidth;
+            const h = 170;
+            let shapes = '';
+            let x = -80;
+            while (x < w + 80) {
+                const r = rand(70, 130);
+                const dropY = rand(-30, 40);
+                shapes += canopyBlob(x, dropY, r, 'rgba(9, 15, 7, 0.85)');
+                x += rand(120, 190);
+            }
+            el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">${shapes}</svg>`;
+        }
+        render();
+        window.addEventListener('resize', render);
+    }
+    buildTopCanopy();
+
     /* gentle parallax sway with cursor position */
+    const far = document.getElementById('treeline-far');
     const back = document.getElementById('treeline-back');
     const front = document.getElementById('treeline-front');
+    const top = document.getElementById('canopy-top');
     window.addEventListener('mousemove', e => {
         const nx = (e.clientX / window.innerWidth - 0.5);
-        back.style.transform = `translateX(${nx * -14}px)`;
-        front.style.transform = `translateX(${nx * -26}px)`;
+        const ny = (e.clientY / window.innerHeight - 0.5);
+        far.style.transform = `translateX(${nx * -8}px)`;
+        back.style.transform = `translateX(${nx * -18}px)`;
+        front.style.transform = `translateX(${nx * -32}px)`;
+        top.style.transform = `translate(${nx * -10}px, ${ny * -6}px)`;
     });
 })();
 </script>
